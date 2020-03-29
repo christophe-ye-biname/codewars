@@ -9,4 +9,3 @@ def solution(string,markers):
     return str
 
 print(solution("apples, pears # and bananas\ngrapes\nbananas !apples", ["#", "!"]))
-#gvgjgnfhjbftfunhgfnjdhdbkbthdbgfdbdfgbdfbdgvkuhk

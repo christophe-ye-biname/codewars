@@ -1,3 +1,5 @@
+import re 
+import math
 def calc(expression):
     ###########################################
     def evaluate(string):
@@ -11,8 +13,6 @@ def calc(expression):
             '-' : lambda x, y : x-y
         }
 
-
-        
         i = 0
         while i < len(string):
             if string[i] in first:
@@ -20,6 +20,7 @@ def calc(expression):
                 string = string[:i-1] + [str(temp)] + string[i+2:]
                 i = 0
             i += 1
+
         i = 0
         while i < len(string):
             if string[i] in second:
@@ -27,30 +28,39 @@ def calc(expression):
                 string = string[:i-1] + [str(temp)] + string[i+2:]
                 i = 0
             i += 1
+            
         return ''.join(string)
     #################################################
     def spli(str):
         tab = []
         op = ['*','/','+','-']
-        count = 1
+        temp = ""
         for i in range(len(str)):
             if str[i] in op:
-                count += 2
-
-        for i in range(count):
-            tab.append("")
-        count = 0
-        for i in range(len(str)):
-            if str[i] not in op:
-                tab[count] += str[i]
-            else:
-                count += 1
-                tab[count] += str[i]
-                count += 1
+                if temp != "":
+                    tab.append(temp)
+                    temp = ""
+                    temp += str[i]
+                    tab.append(temp)
+                    temp = ""
+                elif temp == "":
+                    temp += str[i]
+                    tab.append(temp)
+                    temp = ""
+            elif str[i] not in op:
+                temp += str[i]
+            if i == len(str) - 1:
+                tab.append(temp)
+        i = 0
+        while i < len(tab):
+            if (tab[i] == '*' or tab[i] == '/') and tab[i+1] == '-':
+                tab = tab[:i+1] + [(float(tab[i+1] + tab[i+2]))] + tab[i+3:]
+                i = 0
+            i += 1
         return tab
     ##################################################
     expression = expression.replace(' ', '')
-    print(expression)
+    print(expression, '1')
     i = 0
     while i < len(expression) - 1:
         if expression[i] == '-' and expression[i+1] == '-':
@@ -60,25 +70,33 @@ def calc(expression):
             expression = expression.replace(expression[i] + expression[i+1], '-')
             i = 0
         i += 1
+    print(expression, '2')
     openPar = 0
     closePar = 0
-    while '(' in expression:
-        i = 0
-        while i < len(expression):
-            if expression[i] == '(':
-                openPar = i
-            elif  expression[i] == ')':
-                closePar = i
-                break
-            i += 1
-        temp = evaluate(spli(expression[openPar+1:closePar]))
-        expression = expression[0:openPar] + temp + expression[closePar+1:] 
-    return expression
-    
+    if '(' in expression:
+        while '(' in expression:
+            i = 0
+            while i < len(expression):
+                if expression[i] == '(':
+                    openPar = i
+                elif  expression[i] == ')':
+                    closePar = i
+                    break
+                i += 1
+            temp = evaluate(spli(expression[openPar+1:closePar]))
+            expression = expression[0:openPar] + temp + expression[closePar+2:] 
+            print(expression, '3')
+    expression = evaluate(spli(expression))
+    if '(' not in expression:
+        expression = evaluate(spli(expression))
+    return float(expression)
 
+"""
 print(calc("(((10))))"))
 print(calc("10- 2- -5"))
 print(calc("-7 * -(6 / 3)"))
+"""
+print(calc("(2 / (2 + 3.33) * 4) - -6")) #7.5009380863
 """
  ["1 + 1", 2],
     ["8/16", 0.5],
