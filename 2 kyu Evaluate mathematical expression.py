@@ -55,7 +55,6 @@ def calc(expression):
             if i == len(str) - 1:
                 tab.append(temp)
         i = 0
-        print(tab)
         while i < len(tab):
             if i == 0 and tab[i] == '-':
                 tab = tab[:i] + [float(tab[i] + tab[i+1])] + tab[i+2:]
@@ -124,7 +123,7 @@ print(calc("2 + -2"))
 print(calc("3 * 5"))
 """
 """
-  ["1 + 1", 2],
+    ["1 + 1", 2],
     ["8/16", 0.5],
     ["3 -(-1)", 4],
     ["2 + -2", 0],

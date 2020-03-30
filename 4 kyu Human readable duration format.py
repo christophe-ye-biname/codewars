@@ -6,20 +6,37 @@ def format_duration(seconds):
         tab.append(seconds // 60)
         seconds -= (seconds // 60) * 60
         tab.append(seconds)
-    elif seconds >= 60:
+    if seconds >= 60:
         tab.append(00)
         tab.append(seconds // 60)
         seconds -= (seconds // 60) * 60
         tab.append(seconds)
-    else:
-        tab.append('00')
-        tab.append('00')
+    if seconds < 60:
         tab.append(seconds)
-    str = ""
-    for i in range(len(tab)):
-        if tab[i] != '00' or tab[i] != 0 and i == 0 and tab[i] > 1:
-            str += tab[i] + ''
-    return tab
+    string = ""
+    if len(tab) == 1:
+        if tab[0] != 1:
+            string += str(tab[0]) + ' seconds'
+        else:
+            string += str(tab[0]) + ' second'
+    elif len(tab) == 4:
+        for i in range(len(tab)):
+            if i == 0 and tab[i] != 0:
+                if tab[i] < 2:
+                    string += str(tab[i]) + ' hour '
+                else:
+                    string += str(tab[i]) + ' hours '
+            elif i == 1 and tab[i] != 0:
+                if tab[i] < 2:
+                    string += str(tab[i]) + ' minute '
+                else:
+                    string += str(tab[i]) + ' minutes '
+            elif i == 2 and tab[i] != 0:
+                if tab[i] < 2:
+                    string += str(tab[i]) + ' second '
+                else:
+                    string += str(tab[i]) + ' seconds '
+    return string
 
 print(format_duration(3662))
 print(format_duration(1))
