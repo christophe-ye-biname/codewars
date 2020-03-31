@@ -6,8 +6,8 @@ def calc1(expr):
     res = [0]
     for token in expr.split(' '):
         if token in op:
-            res.pop()
-            res.pop()
+            op1 = res.pop()
+            op2 = res.pop()
             res.append(op[token](op1, op2))
         elif token:
             res.append(float(token))
